@@ -19,6 +19,7 @@ package ch.qos.logback.perf;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import io.edap.log.LoggerManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -49,11 +50,14 @@ public class FileAppenderBenchmark {
     public static final String LOGBACK_FILE_PATH = "target/test-output/logback-perf.log";
     public static final String LOG4J2_FILE_PATH = "target/test-output/log4j2-perf.log";
     public static final String LOG4J_FILE_PATH = "target/test-output/log4j-perf.log";
+    public static final String ELOG_FILE_PATH = "target/test-output/elog-perf.log";
+
     
     Logger log4j2Logger;
     org.slf4j.Logger slf4jLogger;
     org.apache.log4j.Logger reload4jLogger;
     java.util.logging.Logger julLogger;
+    io.edap.log.Logger elogLogger;
     String outFolder = "";
     
     
@@ -62,6 +66,7 @@ public class FileAppenderBenchmark {
         System.setProperty("log4j.configurationFile", "log4j2-perf.xml");
         System.setProperty("logback.configurationFile", "logback-perf.xml");
         System.setProperty("log4j.configuration", "log4j-perf.xml");
+        System.setProperty("edaplog.configurationFile", "edap-log-perf.xml");
 
         outFolder = System.getProperty("outFolder", "");
         
@@ -72,6 +77,7 @@ public class FileAppenderBenchmark {
         log4j2Logger = LogManager.getLogger(loggerName);
         slf4jLogger = LoggerFactory.getLogger(loggerName);
         reload4jLogger = org.apache.log4j.Logger.getLogger(loggerName);
+        elogLogger     = LoggerManager.getLogger(loggerName);
         
     }
 
@@ -80,6 +86,7 @@ public class FileAppenderBenchmark {
         System.clearProperty("log4j.configurationFile");
         System.clearProperty("log4j.configuration");
         System.clearProperty("logback.configurationFile");
+        System.clearProperty("edaplog.configurationFile");
 
         deleteLogFiles();
     }
@@ -93,6 +100,9 @@ public class FileAppenderBenchmark {
         
         final File log4j2File = new File(LOG4J2_FILE_PATH);
         log4j2File.delete();
+
+        final File elogFile = new File(ELOG_FILE_PATH);
+        elogFile.delete();
     }
 
     @BenchmarkMode(Mode.Throughput)
@@ -107,6 +117,13 @@ public class FileAppenderBenchmark {
     @Benchmark
     public void logbackFile() {
         slf4jLogger.debug(MESSAGE);
+    }
+
+    @BenchmarkMode(Mode.Throughput)
+    @OutputTimeUnit(TimeUnit.MILLISECONDS)
+    @Benchmark
+    public void elogFile() {
+        elogLogger.debug(MESSAGE);
     }
 
     @BenchmarkMode(Mode.Throughput)

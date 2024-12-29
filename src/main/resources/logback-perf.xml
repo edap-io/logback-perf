@@ -17,13 +17,13 @@
 -->
 <configuration debug="false">
     
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>target/test-output/logback-perf.log</file>
+    <appender name="FILE" class="ch.qos.logback.perf.appenders.LogbackBlackHoleAppender">
+<!--        <file>target/test-output/logback-perf.log</file>-->
         <bufferSize>256KB</bufferSize>
         <immediateFlush>false</immediateFlush>  
         <append>false</append>
         <encoder>
-            <pattern>%d %p [%t] %c - %m%n</pattern>  
+            <pattern>%d %p [%t] [%logger{36}] - %m%n</pattern>
         </encoder>
     </appender>
 

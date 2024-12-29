@@ -15,7 +15,7 @@ do
     # default run duration of 10 seconds, single fork, time unit: microseconds, 2 warm up iterations, 4 iterations,
     # $TC is the thread count, timeout 3 seconds, output results to "results-${DATE}-$TC.txt"
     DURATION=4
-    java -jar target/benchmarks.jar ".*FileAppenderBenchmark.*" -r $DURATION -f 1 -tu ms -w $DURATION -wi 0 -i 4 -t $TC -to 3 -o "results-${DATE}-$TC.txt" 
+    java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.nio=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-modules=jdk.unsupported --add-opens=java.base/jdk.internal.misc=ALL-UNNAMED --add-opens=java.base/sun.nio.ch=ALL-UNNAMED --add-opens=jdk.unsupported/sun.misc=ALL-UNNAMED -jar target/benchmarks.jar ".*FileAppenderBenchmark.*" -r $DURATION -f 1 -tu ms -w $DURATION -wi 0 -i 4 -t $TC -to 3 -o "results-${DATE}-$TC.txt"
 done
 
 

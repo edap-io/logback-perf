@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="baseFile"
+              class="ch.qos.logback.perf.appenders.EdapBlackHoleAppender">
+<!--        <file>target/test-output/elog-perf.log</file>-->
+        <bufferSize>256KB</bufferSize>
+        <immediateFlush>false</immediateFlush>
+        <encoder>
+            <pattern>%d %p [%t] [%logger{36}] - %m%n</pattern>
+        </encoder>
+    </appender>
+    <root level="DEBUG">
+        <appender-ref ref="baseFile" />
+    </root>
+</configuration>
